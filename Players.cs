@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Tic_Tac_Toe
 {
@@ -23,8 +24,8 @@ namespace Tic_Tac_Toe
             else return true;
         }
 
-        
-        internal int Move(Game g, string name)
+
+        private int getInput(string name)
         {
             Console.Write($"{name}, Enter your move: ");
 
@@ -32,12 +33,32 @@ namespace Tic_Tac_Toe
 
             string playerInput = Console.ReadLine();
 
+            int position = -1;
+
+                //int position = Int32.Parse(playerInput);
+            try
+            {
+
+                position = Int32.Parse(playerInput);
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Input a number between (1-9)");
+            }
             Console.WriteLine();
+            return position;
+        }
+        
+        internal int Move(Game g, string name)
+        {
 
-            int position = Int32.Parse(playerInput);
+            int position = getInput(name);
 
-            Console.WriteLine(position);
-
+            if (position < 0) {
+                Console.WriteLine("Invalid Move\n");
+                return -1;
+            }
             if (checkWithinRange(position) && !g.isOccupied(position))
             {
                 occupiedPos.Add(position);
@@ -48,6 +69,7 @@ namespace Tic_Tac_Toe
                 Console.WriteLine("Invalid Move\n");
                 return -1;
             }
+            
         }
     }
 }
